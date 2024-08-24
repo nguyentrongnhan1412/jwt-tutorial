@@ -1,0 +1,46 @@
+version: '1.0'
+services:
+  auth-server:
+    depends_on:
+      - auth_db_mysql
+    build: .
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    working_dir: /app
+    volumes:
+      - ./:/app
+    env_file: .env
+    environment:
+      MYSQL_HOST: auth_db_mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: admin
+      MYSQL_DB: jwt_auth_db
+    stdin_open: true
+    tty: true
+    networks:
+      - jwt_auth_tutorial
+
+  auth_db_mysql:
+    container_name: auth_db_mysql
+    image: mysql:8.0
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+    restart: on-failure
+    env_file: .env
+    ports:
+      -  $DB_LOCAL_PORT:$DB_DOCKER_PORT
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: jwt_auth_db
+    networks:
+      - jwt_auth_tutorial
+
+volumes:
+  jwt_auth_db:
+
+networks:
+  jwt_auth_tutorial:
+    driver: bridge
+  
