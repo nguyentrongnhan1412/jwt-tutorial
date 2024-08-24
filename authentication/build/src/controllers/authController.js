@@ -17,7 +17,7 @@ let loginAPI = async (req, res) => {
       UserID: confirmUser.UserID,
       Username: confirmUser.Username
     }, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '20s'
+      expiresIn: '30s'
     });
     return res.status(200).json({
       message: 'Login successfully',

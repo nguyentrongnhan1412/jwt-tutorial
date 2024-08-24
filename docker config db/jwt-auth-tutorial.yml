@@ -1,0 +1,10 @@
+version: '1.0'
+services:
+  db-mysql-jwt-auth:
+    image: mysql:8
+    restart: always
+    environment:
+      - MYSQL_DATABASE=jwt_auth_mysql
+      - MYSQL_ROOT_PASSWORD=123
+    ports:
+      - "3308:3306"
